@@ -1,0 +1,69 @@
+Key concepts
+Industrial Control SystemsInformation Technologycritical infrastructurecontrol systemOperational Technologyformal verificationBeagleBone Blackindustrial internet of thingsdata acquisitionsemanticsformal semanticsukraine
+
+
+Abstract
+The paradigm shift of enabling extensive intercommunication between the Operational Technology (OT) and Information Technology (IT) devices allows vulnerabilities typical to the IT world to propagate to the OT side. Therefore, the security layer offered in the past by air gapping is removed, making security patching for OT devices a hard requirement. Conventional patching involves a device reboot to load the patched code in the main memory, which does not apply to OT devices controlling critical processes due to downtime, necessitating in-memory vulnerability patching. Furthermore, these control binaries are often compiled by in-house proprietary compilers, further hindering the patching process and placing reliance on OT vendors for rapid vulnerability discovery and patch development. The current state-of-the-art hotpatching approaches only focus on firmware and/or RTOS. Therefore, in this work, we develop ICSPatch, a framework to automate control logic vulnerability localization using Data Dependence Graphs (DDGs). With the help of DDGs, ICSPatch pinpoints the vulnerability in the control application. As an independent second step, ICSPatch can non-intrusively hotpatch vulnerabilities in the control application directly in the main memory of Programmable Logic Controllers while maintaining reliable continuous operation. To evaluate our framework, we test ICSPatch on a synthetic dataset of 24 vulnerable control application binaries from diverse critical infrastructure sectors. Results show that ICSPatch could successfully localize all vulnerabilities and generate patches accordingly. Furthermore, the patch added negligible latency increase in the execution cycle while maintaining correctness and protection against the vulnerability.
+
+Synopsis
+Enabling intercommunication between OT and IT devices removes the security layer offered by air gapping, making security patching for OT devices a necessity, and ICSPatch successfully localizes and patches vulnerabilities in control applications without causing significant latency increase.
+In ‘ICSPatch’, Prashant Rajput and colleagues (2022) reported that critical infrastructure relies on Industrial Control Systems (ICS) for regulating physical processes. The text discusses a methodology for vulnerability localization and control binary hotpatching. It also mentions the need to patch vulnerabilities in control applications rather than imported functions. The text highlights the prevalence of attacks on critical infrastructure and the importance of localizing vulnerabilities in control binaries. It mentions specialized tools for fuzzing control application binaries and extracting information for rehosting. The text also mentions examples of attacks on critical infrastructure and the use of machine learning-based approaches for vulnerability identification. ICSPatch is proposed as a tool for vulnerability identification, localization, and hotpatching. It is implemented for the Codesys platform and successfully patches vulnerabilities in control application binaries.
+
+The research involved 225000 customers without electricity for several hours.
+
+Some of the results claim to diverge from previous research in this subject: “Orthogonal control logic modification protection solutions, such as checksums, digital signatures, control logic comparison, and formal verification, are needed for scenarios like these. ICSPatch focuses on hotpatching control applications rather than firmware and does not assume the availability of trusted source patches,” Rajput suggested.
+
+However, “ICSPatch is a Codesys-specific implementation that identifies vulnerabilities, localizes them, and applies patches. It can work with other platforms but is designed for Codesys. It currently only patches the first instance of a vulnerability and requires user input for memory-related vulnerabilities. Patching OS command injection vulnerabilities is automated. ICSPatch is non-intrusive on single-core devices but would require a more elaborate mechanism for multicore cases,” say the authors.
+
+
+
+
+Highlights
+Critical infrastructure such as water treatment plants, the electric grid, chemical manufacturing, and many more rely on various control systems/components broadly identified as Industrial Control Systems (ICS) for regulating physical processes based on industrial logic, necessary for reliable and uninterrupted operation of deeply interconnected critical infrastructure [52]
+We develop a methodology for automated vulnerability localization for non-executable control application binaries using custom-built data dependence graphs
+In parallel, we develop a methodology for control binary hotpatching that can be performed with only remote root access to the device and without any hardware support
+The process begins with assuming access to an exploit input that can crash the control application executing on the development PLC, an assumption already made in the literature for automated vulnerability localization [47]
+We extend ICSPatch to work with Codesys runtime running on BeagleBone Black (BBB)
+We successfully patch out-of-bounds write/read, OS command injection, and invalid input validation vulnerabilities spread across a dataset of 24 synthetic control application binaries while only incurring negligible execution and memory overheads
+
+
+Introduction
+Critical infrastructure such as water treatment plants, the electric grid, chemical manufacturing, and many more rely on various control systems/components broadly identified as Industrial Control Systems (ICS) for regulating physical processes based on industrial logic, necessary for reliable and uninterrupted operation of deeply interconnected critical infrastructure [52]
+These ICS devices executed only the industrial logic, remained confined to the industrial network, and often used proprietary software.
+Attacks on critical infrastructure have become commonplace in the past few years
+These attacks often exploit a vulnerability in the IT infrastructure to reach the Operational Technology (OT) control systems, leading to devastating consequences.
+In an investigation carried out by SANS on 340 professionals, 42% of the respondents confirmed an increase in the cybersecurity budget for their organization [16]
+
+Objectives
+We aim to patch the vulnerability in the control application rather than the imported functions; localizing the vulnerability in the control binary is critical.
+We aim to apply the patch by remotely connecting to the PLC with admin privileges, a realistic and prevalent way to connect to a PLC in the field
+
+Methods
+The process begins with assuming access to an exploit input that can crash the control application executing on the development PLC, an assumption already made in the literature for automated vulnerability localization [47].
+Specialized tools such as ICSFuzz [55] enable the fuzzing of control application binaries, providing the exploit input if available.
+ICSPatch extracts hexdumps of the runtime process memory space, the MainTask thread executing the control application, and any other required shared libraries.
+ICSPatch extracts other information, such as critical addresses, to enable rehosting of the control application
+
+Findings
+Some other examples include a selfreplicating virus on the computer network of Saudi Aramco, which shut down 5.7 million barrels of output per day - more than 5% of the global oil supply [40].
+The machine learning-based approach DeepVL [26] achieves an accuracy of 96.9% with low precision of 70.1%, while Devign [61] reaches accuracy of 80.24%
+Discussion
+We include eight different memory-related functions in our dataset and successfully patch the vulnerable control binaries using ICSPatch.
+The patches for these memory-related functions implement a bound check and are applicable to all the relevant examples with minor modifications to the live memory addresses of the deployed PLC.
+In most cases, extending ICSPatch to support other functions requires adding the appropriate node to the DDG for automated vulnerability localization.
+ICSPatch requires a kernel-level component (LKM, in our case, or a dedicated patch driver) for patching the control applications running on Linux operating systems.
+ICSPatch provides a JTAG-based patcher outof-the-box to support such devices, which we have successfully tested on a BeagleBone Black (BBB).
+
+Conclusion
+This work proposes ICSPatch, a tool for automated vulnerability identification by detecting violations to security specifications, localization by traversing a DDG, and hotpatching using an LKM-based patcher.
+We implement ICSPatch for the Codesys platform, deployed on over 400 known ICS devices from 80 industrial device vendors.
+We successfully patch out-of-bounds write/read, OS command injection, and invalid input validation vulnerabilities spread across a dataset of 24 synthetic control application binaries while only incurring negligible execution and memory overheads.
+We demonstrate ICSPatch patching a live PLC controlling a HIL simulation of an industrial process
+
+Comparative analysis
+Counterpoint to earlier claims
+Such scenarios require orthogonal control logic modification protection solutions, for instance, using checksums, digital signatures [53], control logic comparison while uploading [46], and formal verification employing behavior [2, 33, 35, 59], state [10, 19, 29], specification verification [4, 22, 62]. Since ICSPatch targets hotpatching of control applications instead of the firmware, we cannot assume the existence of patches from a trusted source (an assumption by HERA [37]
+
+Performance evaluation
+Performance evaluation and prior work
+Vulnerability Localization Accuracy. To test the accuracy of ICSPatch, we utilize our synthetic application binary dataset with 24 binaries and the 20 vulnerable binaries from the ICSFuzz dataset [55]

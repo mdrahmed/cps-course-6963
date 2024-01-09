@@ -1,0 +1,10 @@
+csdr
+nmux
+ddcd
+*.o
+*.so
+*.so.*
+tags
+dumpvect.*.vect
+*.swp
+grc_tests/top_block.py
