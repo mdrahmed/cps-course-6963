@@ -1,9 +1,9 @@
 # Rollback: Access your car without key
 [Replay Guardian: Unleashing Real-Time Car Access Without Keys](https://docs.google.com/presentation/d/e/2PACX-1vSgG_BwKBO6aSGT3zO4F7QAdDvUY0IcXeUB9Mc21_h1XsCaDoyKpCQ-uAHmMjHbROocNk92ELYahE4P/pub?start=true&loop=false&delayms=3000)
+
 The key idea is to unlock a car without using the key, which we got from this blackhat paper - [RollBack: A New Time-Agnostic Replay Attack Against the Automotive Remote Keyless Entry Systems](https://i.blackhat.com/USA-22/Thursday/US-22-Csikor-RollBack-A-New-Time-Agnostic-Replay-Attack.pdf)
 
-**CPS project rollback code**
-Code: keys-monitor.ino
+**CPS project rollback code:** keys-monitor.ino
 
 #### Project Overview
 Replay Guardian refers to a specific type of security vulnerability associated with keyless entry systems in
@@ -57,8 +57,7 @@ of Rollback, a time-agnostic replay attack that initiates a rollback mechanism t
 previously captured signals. By capturing consecutive RKE signals, Replay Guardian can replay
 instructions like those for persistent access even in shared vehicle settings. Replay Guardian thus
 highlights the pressing need to reassess and bolster security in modern remote entry systems.
-##### Rolling Code Security in Keyless Entry Systems: A diagram depicting the interaction between owner,
-remote, vehicle, and receiver during a rolling code transmission.
+##### Rolling Code Security in Keyless Entry Systems: A diagram depicting the interaction between owner, remote, vehicle, and receiver during a rolling code transmission.
 Key Components:
  - Owner: Has a remote control that sends signals to the vehicle.
  - Vehicle: Has a receiver that receives signals and unlocks doors and garages.
@@ -67,22 +66,25 @@ How the Rolling Code Works:
 1. Owner presses the button: Remote generates a new code.
 2. Code sent to the receiver: The receiver checks the code's validity.
 3. Valid code: Receiver unlocks doors.Attacker Exploitation:
+
 Attacker Exploitation:
 Capturing a remote signal and replaying it to unlock doors.
 
 ![rollback.png](pics/rollback.png)
 
 Rolljam:
-○ Owner presses "Unlock 1".
-○ Attacker jams the signal and captures "Unlock 1".
-○ Owner presses "Unlock 2".
-○ Attacker jams the signal and captures "Unlock 2".
-○ Attacker replays "Unlock 1" to unlock the car.
+ -  Owner presses "Unlock 1".
+ - Attacker jams the signal and captures "Unlock 1".
+ - Owner presses "Unlock 2".
+ - Attacker jams the signal and captures "Unlock 2".
+ - Attacker replays "Unlock 1" to unlock the car.
+
 Rollback:
-○ Owner presses "Unlock 1".
-○ Attacker captures "Unlock 1".
-○ Owner presses any other button (e.g., "Lock").
-○ Attacker can replay "Unlock 1" at any time to unlock the car.
+ - Owner presses "Unlock 1".
+ - Attacker captures "Unlock 1".
+ - Owner presses any other button (e.g., "Lock").
+ - Attacker can replay "Unlock 1" at any time to unlock the car.
+
 Overall, this diagram shows that Rollback is a more powerful attack than Rolljam because it is less
 time-sensitive, requires fewer captured codes, and can be reused.
 
@@ -128,6 +130,7 @@ to specific frequency domains for signal analysis. To disrupt or jam frequencies
 attackers have a diverse range of options, depending on their expertise and preferences. Notably, jamming
 is not a strict requirement for the success of the RollBack attack, differentiating it from some other
 attacks.
+
 **We utilized the following equipment for our project:**
 1. FS1000A Transmitter (433 MHz and 315 MHz): This is a low-cost radio frequency (RF)
 transmitter commonly used in DIY projects. It operates in the 433 MHz and 315 MHz frequency
@@ -189,6 +192,7 @@ a transmitter, it is sent via pulses. To do that, I created a pulse for each and
 captured by using the RTL-SDR. Using the following function, we are sending the data to the vehicle.
 
 **Our project successfully achieved the following:**
+
 Our project's accomplishments not only include the thorough exploration of vulnerabilities in keyless
 entry systems but also extend to the practical implementation and execution of the RollBack attack. Byproviding valuable insights into vulnerabilities and proposing effective countermeasures, our efforts
 contribute significantly to the advancement of keyless entry system security.
@@ -216,7 +220,7 @@ rollback attack and its implications.
 b. The prototype system serves as a practical tool for showcasing the security risks
 associated with rolling code-based keyless entry systems.
 
-##### Challenges and Mitigation Strategies
+#### Challenges and Mitigation Strategies
 During the project, we encountered the following challenges:
 We encountered noteworthy challenges that enriched our problem-solving capabilities. Facing access
 limitations to specific vehicles and their key fobs prompted us to adopt creative approaches, overcoming
@@ -254,7 +258,7 @@ vulnerabilities.
 b. Directly communicated discovered vulnerabilities to manufacturers, adhering to
 established guidelines for responsible disclosure within the realm of automotive security.
 
-##### Future Work and Recommendations:
+#### Future Work and Recommendations:
 Based on our findings, we advocate for future work that encompasses the development of robust
 countermeasures against the RollBack attack within keyless entry systems. This entails creating and
 deploying resilient solutions to fortify security protocols while addressing emerging threats and
@@ -298,6 +302,5 @@ manufacturers, encouraging them to implement more advanced mechanisms and securi
 keyless entry systems. As vehicles become increasingly connected and autonomous, the importance of
 robust security measures cannot be overstated.
 #### References:
-1. RollBack: A New Time-Agnostic Replay Attack Against Automotive Remote Keyless Entry
-Systems.
-2. MITRE eCTF Tools
+1. [RollBack: A New Time-Agnostic Replay Attack Against Automotive Remote Keyless Entry Systems.](https://arxiv.org/pdf/2210.11923.pdf)
+2. [MITRE eCTF Tools](https://github.com/mitre-cyber-academy/2023-ectf-tools)
